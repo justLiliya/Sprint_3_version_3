@@ -44,7 +44,7 @@ public class UnLoginCourierTest {
     }
 
     @Test
-    @DisplayName("checking the login without wrong login unsuccessful")
+    @DisplayName("checking the login with wrong login unsuccessful")
     public void UnLoginCourierWithWrongLogin(){
         //Act
         ValidatableResponse wrongLogin = loginClient.login(new Couriercredentials(courier.login+"1", courier.password));
@@ -66,7 +66,7 @@ public class UnLoginCourierTest {
     }
 
     @Test
-    @DisplayName("checking the login without password unsuccessful")
+    @DisplayName("checking the login with password unsuccessful")
     public void unLoginCourierWithoutRequiredPassword(){
         //Act
         ValidatableResponse emptyPassword = loginClient.login(new Couriercredentials(courier.login, ""));
@@ -76,7 +76,7 @@ public class UnLoginCourierTest {
     }
 
     @Test
-    @DisplayName("checking the login without nonexistent user unsuccessful")
+    @DisplayName("checking the login with nonexistent user unsuccessful")
     public void UnLoginCourierWithNonExistentUser(){
         //Act
         ValidatableResponse nonExistent = loginClient.login(new Couriercredentials("abirvalg010101", "abirvalg010101"));

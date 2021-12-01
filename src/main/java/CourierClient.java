@@ -28,8 +28,6 @@ public class CourierClient extends RequestClient{
                 .when()
                 .post(COURIER_PATH + "login/")
                 .then()
-                .assertThat()
-                .statusCode(200)
                 .extract()
                 .path("id");
 
@@ -56,8 +54,6 @@ public class CourierClient extends RequestClient{
                 .when()
                 .post(COURIER_PATH)
                 .then()
-                .assertThat()
-                .statusCode(400)
                 .extract()
                 .path("message");
 
