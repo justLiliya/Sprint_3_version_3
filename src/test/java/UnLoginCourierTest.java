@@ -10,10 +10,12 @@ import static org.junit.Assert.assertEquals;
 public class UnLoginCourierTest {
 
     private LoginClient loginClient;
+    CourierClient courierClient;
     private int courierId;
     Courier courier = Courier.getRandom();
     String mes400 = "Недостаточно данных для входа";
     String mes404 = "Учетная запись не найдена";
+
 
     @Step
     @Before
@@ -33,7 +35,7 @@ public class UnLoginCourierTest {
 
 
     @Test
-    @DisplayName("checking the login without password unsuccessful")
+    @DisplayName("checking the login with wrong password unsuccessful")
     public void unLoginCourierWithWrongPassword(){
         //Act
         ValidatableResponse wrongPassword = loginClient.login(new Couriercredentials(courier.login, courier.password+"1"));
@@ -55,7 +57,7 @@ public class UnLoginCourierTest {
     }
 
     @Test
-    @DisplayName("checking the login without login unsuccessful")
+    @DisplayName("checking the login with empty login unsuccessful")
     public void unLoginCourierWithoutRequiredLogin(){
         //Act
         ValidatableResponse emptyLogin = loginClient.login(new Couriercredentials("", courier.password));
@@ -66,7 +68,7 @@ public class UnLoginCourierTest {
     }
 
     @Test
-    @DisplayName("checking the login with password unsuccessful")
+    @DisplayName("checking the login with empty password unsuccessful")
     public void unLoginCourierWithoutRequiredPassword(){
         //Act
         ValidatableResponse emptyPassword = loginClient.login(new Couriercredentials(courier.login, ""));
@@ -83,5 +85,29 @@ public class UnLoginCourierTest {
         //Assert
         assertEquals("Статус не 404 Not Found!",404,nonExistent.extract().statusCode());
         assertEquals("Ошибка в сообщении ответа!", mes404, nonExistent.extract().path("message"));
+    }
+
+    @Test
+    @DisplayName("checking the login without password-parameter unsuccessful")
+    public void UnLoginCourierWithoutPasswordParam(){
+        //Arrange
+        Couriercredentials onlyLogin = Couriercredentials.getWithLoginOnly(courier);
+        //Act
+        ValidatableResponse withoutParam = loginClient.login(onlyLogin);
+        //Assert
+        assertEquals("Статус не 400 Bad Request!",400,withoutParam.extract().statusCode());
+        assertEquals("Ошибка в сообщении ответа!", mes400, withoutParam.extract().path("message"));
+    }
+
+    @Test
+    @DisplayName("checking the login without login-parameter unsuccessful")
+    public void UnLoginCourierWithoutLoginParam(){
+        //Arrange
+        Couriercredentials onlyPassword = Couriercredentials.getWithPasswordOnly(courier);
+        //Act
+        ValidatableResponse withoutParam = loginClient.login(onlyPassword);
+        //Assert
+        assertEquals("Статус не 400 Bad Request!",400,withoutParam.extract().statusCode());
+        assertEquals("Ошибка в сообщении ответа!", mes400, withoutParam.extract().path("message"));
     }
 }

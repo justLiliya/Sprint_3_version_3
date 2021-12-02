@@ -12,6 +12,8 @@ public class Courier {
         this.password = password;
         this.firstname = firstname;
     }
+
+
     //Хелпер-метод, генерирующий данные
     public static Courier getRandom() {
 
